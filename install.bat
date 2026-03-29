@@ -4,6 +4,9 @@ setlocal enabledelayedexpansion
 :: Windows 11 Security Hardener - Installation Script
 :: Must be run as Administrator
 
+:: Change to the directory where this script is located
+cd /d "%~dp0"
+
 echo ================================================================
 echo   Windows 11 Security Hardener - Installation
 echo ================================================================
@@ -33,14 +36,23 @@ if %errorLevel% neq 0 (
 )
 echo [+] Python found.
 
-:: Check source files
-if not exist "src\main.py" (
+:: Check source files using absolute path
+if not exist "%~dp0src\main.py" (
     echo ERROR: src\main.py not found!
-    echo Please ensure the src folder contains main.py
+    echo Current directory: %CD%
+    echo Looking for: %~dp0src\main.py
+    echo.
+    echo Please ensure:
+    echo 1. You extracted ALL files from the archive
+    echo 2. The 'src' folder is in the same directory as install.bat
+    echo 3. The file 'main.py' exists inside the 'src' folder
+    echo.
+    dir "%~dp0" 2>nul
+    echo.
     pause
     exit /b 1
 )
-if not exist "src\requirements.txt" (
+if not exist "%~dp0src\requirements.txt" (
     echo ERROR: src\requirements.txt not found!
     pause
     exit /b 1
